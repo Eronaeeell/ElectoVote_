@@ -1,4 +1,4 @@
-# ElectoVote_
+# ElectoVote
 
 Welcome to ElectoVote, a decentralized governance voting application built on blockchain technology. The application leverages Foundry for smart contract development and integrates with the Morph & Sign Protocol for secure attestation-based voting. This system ensures transparency, security, and a gamified user experience for voters.
 
