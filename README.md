@@ -1,31 +1,66 @@
-# ElectoVote
+## Foundry
 
-Welcome to ElectoVote, a decentralized governance voting application built on blockchain technology. The application leverages Foundry for smart contract development and integrates with the Morph & Sign Protocol for secure attestation-based voting. This system ensures transparency, security, and a gamified user experience for voters.
+**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
 
-**Features**
-1. Secure Voting
-2. Transparent Governance
-3. Gamified Interface
-4. Wallet Integration
-5. Cross-Platform Accessibility
+Foundry consists of:
 
-**Technology Stack**
-- Frontend: HTML, CSS, and Javascript
-- Backend: Foundry smart contracts
-- Tools: Metamask wallet, Web3.js communication, Morph & Sign protocol based seurity
+-   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
+-   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
+-   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
+-   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
 
-**Usage Guide**
-- Connect Wallet
-- Open Main.html in a browser.
-- Click "Connect Wallet".
-- Follow MetaMask instructions to connect your wallet.
-**Vote**
--Choose a candidate on vote.html.
--Click "Vote".
--Check the progress bar for real-time updates.
+## Documentation
 
-**Contributors**
-- Kelvin Guinawa (FullStack)
-- Angelina Leanore (FullStack & UI/UX Designer)
-- Harisson Matthew (FullStack)
-- Kenneth Jonathan Mardiyo (Product Manager)
+https://book.getfoundry.sh/
+
+## Usage
+
+### Build
+
+```shell
+$ forge build
+```
+
+### Test
+
+```shell
+$ forge test
+```
+
+### Format
+
+```shell
+$ forge fmt
+```
+
+### Gas Snapshots
+
+```shell
+$ forge snapshot
+```
+
+### Anvil
+
+```shell
+$ anvil
+```
+
+### Deploy
+
+```shell
+$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+```
+
+### Cast
+
+```shell
+$ cast <subcommand>
+```
+
+### Help
+
+```shell
+$ forge --help
+$ anvil --help
+$ cast --help
+```
