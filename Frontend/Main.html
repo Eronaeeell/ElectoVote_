@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ElectoVote</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: url('img/Mainpage.jpg') no-repeat center center/cover;
+        font-family: "Poppins", sans-serif;
+        color: white;
+        overflow: hidden;
+      }
+      .container {
+        text-align: center;
+        background: rgba(0, 0, 0, 0.758);
+        padding: 60px 50px;
+        border-radius: 20px;
+        box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5);
+        width: 90%;
+        max-width: 500px;
+        animation: fadeIn 1s ease-in-out;
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 30px;
+      }
+      .logo img {
+        width: 80px;
+        height: 80px;
+        margin-right: 15px;
+      }
+      .title {
+        font-size: 36px;
+        font-weight: 700;
+        text-shadow: 0px 3px 8px rgba(0, 0, 0, 0.8);
+      }
+      .subtitle {
+        font-size: 18px;
+        margin: 25px 0;
+        line-height: 1.6;
+      }
+      .button {
+        background: linear-gradient(90deg, #ff7b54, #ff5673);
+        color: white;
+        border: none;
+        padding: 18px 50px;
+        font-size: 20px;
+        font-weight: 700;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0px 5px 15px rgba(255, 87, 115, 0.5);
+      }
+      .button:hover {
+        background: linear-gradient(90deg, #ff5673, #ff7b54);
+        box-shadow: 0px 10px 20px rgba(255, 87, 115, 0.7);
+        transform: translateY(-3px);
+      }
+      .guide {
+        font-size: 16px;
+        margin-top: 30px;
+      }
+      .guide a {
+        color: #00a3ff;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+      }
+      .guide a:hover {
+        color: #0085cc;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="logo">
+          <img src="Img/logo.png" alt="ElectoVote logo" />
+        </div>
+        <div class="title">ElectoVote</div>
+      </div>
+      <div class="subtitle" style="font-weight: bold">Create an Account</div>
+      <div class="subtitle">
+        Connect with World ID to create your account seamlessly.
+      </div>
+      <button id="connectButton" class="button" onclick="connectWallet()">
+        Connect Wallet
+      </button>
+      <div class="guide">
+        Don't have World ID? <a href="#">Follow this guide</a>
+      </div>
+    </div>
+
+    <script>
+      async function connectWallet() {
+        if (typeof window.ethereum !== "undefined") {
+          try {
+            // Request account connection to MetaMask
+            const accounts = await window.ethereum.request({
+              method: "eth_requestAccounts",
+            });
+
+            // If connection is successful, store the wallet address
+            if (accounts.length > 0) {
+              const walletAddress = accounts[0];
+              localStorage.setItem("connectedWallet", walletAddress); // Store wallet address in localStorage
+              document.getElementById("connectButton").textContent =
+                "Connected";
+
+              // Redirect to the next page
+              window.location.href = "after.html"; // Replace with your target page URL
+            }
+          } catch (error) {
+            console.error("Error connecting to MetaMask:", error);
+            alert("Could not connect to MetaMask. Please try again.");
+          }
+        } else {
+          alert(
+            "MetaMask is not installed. Please install it to connect your wallet."
+          );
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Election Game</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        background-color: #f0f0f0;
+      }
+      .background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("Img/wh.jpeg");
+        background-size: cover;
+        background-position: center;
+        z-index: -1;
+      }
+      .title {
+        font-size: 28px;
+        text-align: center;
+        font-family: "Press Start 2P", cursive;
+        color: white;
+        margin-top: 20px;
+        position: relative;
+        z-index: 1;
+      }
+      .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-family: "Press Start 2P", cursive;
+        z-index: 1;
+        transition: background-color 0.3s;
+      }
+      .back-button:hover {
+        background-color: #0056b3;
+      }
+      .container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: calc(100vh - 200px);
+        position: relative;
+        z-index: 1;
+        padding-top: 20px;
+      }
+      .candidate {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+      }
+      .candidate img {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+      }
+      .candidate .name {
+        margin-top: 10px;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .candidate .vote-button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: "Press Start 2P", cursive;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+  </head>
+  <body>
+    <div class="background"></div>
+    <button class="back-button" onclick="goBack()">Back</button>
+    <div class="title">AMERICA NEXT PRESIDENT</div>
+    <div class="container">
+      <div class="candidate">
+        <img src="Img/image-removebg-preview.png" alt="Candidate Image" />
+        <div class="name">TRUMP</div>
+        <button class="vote-button" onclick="handleVote('TRUMP')">Vote</button>
+      </div>
+      <div class="candidate">
+        <img src="Img/image-removebg-preview (1).png" alt="Candidate Image" />
+        <div class="name">KAMALA</div>
+        <button class="vote-button" onclick="handleVote('KAMALA')">Vote</button>
+      </div>
+    </div>
+    <script>
+      const contractAddress = "0x971360600908069c9F5d33B7cFA4A760C0Ec5a21"; // Replace with your contract address
+      const contractABI = [
+        {
+          inputs: [
+            { internalType: "string", name: "candidate", type: "string" },
+            { internalType: "string", name: "signature", type: "string" },
+          ],
+          name: "submitVote",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [{ internalType: "address", name: "", type: "address" }],
+          name: "hasVoted",
+          outputs: [{ internalType: "bool", name: "", type: "bool" }],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            { internalType: "string", name: "candidate", type: "string" },
+          ],
+          name: "getVotesForCandidate",
+          outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+          stateMutability: "view",
+          type: "function",
+        },
+      ];
+      let web3, votingContract;
+
+      // Connect to MetaMask
+      async function connectWallet() {
+        if (typeof window.ethereum !== "undefined") {
+          try {
+            web3 = new Web3(window.ethereum);
+            await ethereum.request({ method: "eth_requestAccounts" });
+            votingContract = new web3.eth.Contract(
+              contractABI,
+              contractAddress
+            );
+            console.log("Wallet connected.");
+          } catch (error) {
+            console.error("Error connecting wallet:", error);
+            alert("Could not connect to MetaMask. Please try again.");
+          }
+        } else {
+          alert("MetaMask is not installed. Please install it to continue.");
+        }
+      }
+
+      // Handle voting
+      async function handleVote(candidate) {
+        try {
+          const accounts = await web3.eth.getAccounts();
+          if (!accounts.length) {
+            alert("No wallet connected. Please connect your wallet.");
+            await connectWallet();
+            return;
+          }
+
+          const walletAddress = accounts[0];
+          console.log("Wallet Address:", walletAddress);
+
+          // Sign the voting message
+          const message = `I am voting for ${candidate}`;
+          const signature = await ethereum.request({
+            method: "personal_sign",
+            params: [message, walletAddress],
+          });
+          console.log("Signature:", signature);
+
+          // Submit the vote to the blockchain
+          const tx = await votingContract.methods
+            .submitVote(candidate, signature)
+            .send({
+              from: walletAddress,
+            });
+          console.log("Transaction successful:", tx);
+          alert("Your vote for has been recorded!");
+
+          // Redirect to display.html with transaction details
+          const timestamp = new Date().toISOString();
+          window.location.href =
+            "display.html?txHash=" +
+            tx.transactionHash +
+            "&candidate=" +
+            candidate +
+            "&voterAddress=" +
+            walletAddress +
+            "&timestamp=" +
+            timestamp;
+        } catch (error) {
+          console.error("Error during voting:", error);
+          alert(
+            "An error occurred while submitting your vote. Check the console for details."
+          );
+        }
+      }
+
+      // Initialize wallet connection on page load
+      window.onload = async () => {
+        await connectWallet();
+      };
+
+      function goBack() {
+        if (window.history.length > 1) {
+          window.history.back();
+        } else {
+          window.location.href = "index.html"; // Fallback to the home page if no history
+        }
+      }
+    </script>
+  </body>
+</html>

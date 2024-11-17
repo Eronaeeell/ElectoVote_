@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vote Transaction Details</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Press Start 2P", cursive;
+        background-color: #f0f0f0;
+        min-height: 100vh; /* Ensure full viewport height */
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        flex-direction: column;
+      }
+      .background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("Img/wh.jpeg");
+        background-size: cover;
+        background-position: center;
+        z-index: -1;
+        cursor: pointer; /* Add pointer cursor for clickable area */
+      }
+      .header {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 24px;
+        color: #000;
+        position: relative;
+        z-index: 1;
+      }
+      .header h1 {
+        font-size: 20px;
+      }
+      .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        font-size: 14px;
+        font-family: "Press Start 2P", cursive;
+        z-index: 1;
+        transition: background-color 0.3s;
+      }
+      .back-button:hover {
+        background-color: #0056b3;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 25px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 2;
+      }
+      .transaction-details {
+        font-size: 14px;
+        line-height: 1.8;
+        color: #444;
+      }
+      .transaction-details .detail {
+        margin-bottom: 15px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+      }
+      .transaction-details .label {
+        font-weight: bold;
+        color: #333;
+        font-size: 12px;
+      }
+      .transaction-details .value {
+        color: #007bff;
+        word-break: break-all;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background" id="background"></div>
+    <button class="back-button" onclick="goBack()">Back</button>
+
+    <div class="container" id="container">
+      <div class="header">
+        <h1>Vote Transaction Details</h1>
+      </div>
+
+      <div class="transaction-details">
+        <div class="detail">
+          <span class="label">Transaction Hash:</span>
+          <span id="txHash" class="value"></span>
+        </div>
+        <div class="detail">
+          <span class="label">Voting Candidate:</span>
+          <span id="candidateName" class="value"></span>
+        </div>
+        <div class="detail">
+          <span class="label">Voter Address:</span>
+          <span id="voterAddress" class="value"></span>
+        </div>
+        <div class="detail">
+          <span class="label">Timestamp:</span>
+          <span id="timestamp" class="value"></span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function formatHash(hash) {
+        if (hash.length <= 20) return hash;
+        return (
+          hash.substring(0, 10) +
+          "" +
+          hash.substring(20, 26) +
+          "" +
+          hash.substring(36, 42) +
+          "" +
+          hash.substring(hash.length - 6)
+        );
+      }
+
+      function goBack() {
+        window.location.href = "after.html";
+      }
+
+      // Function to handle clicks outside the container
+      function handleClickOutside(event) {
+        const container = document.getElementById("container");
+        const background = document.getElementById("background");
+
+        // Check if click is on background or outside container
+        if (
+          event.target === background ||
+          (!container.contains(event.target) &&
+            event.target !== document.querySelector(".back-button"))
+        ) {
+          window.location.href = "after.html";
+        }
+      }
+
+      window.onload = async () => {
+        const txHash = new URLSearchParams(window.location.search).get(
+          "txHash"
+        );
+        const candidate = new URLSearchParams(window.location.search).get(
+          "candidate"
+        );
+        const voterAddress = new URLSearchParams(window.location.search).get(
+          "voterAddress"
+        );
+        const timestamp = new URLSearchParams(window.location.search).get(
+          "timestamp"
+        );
+
+        if (txHash && candidate && voterAddress && timestamp) {
+          document.getElementById("txHash").textContent = formatHash(txHash);
+          document.getElementById("candidateName").textContent = candidate;
+          document.getElementById("voterAddress").textContent =
+            formatHash(voterAddress);
+          document.getElementById("timestamp").textContent = timestamp;
+        } else {
+          alert("Missing transaction details. Please try again.");
+        }
+
+        // Add click event listener to document
+        document.addEventListener("click", handleClickOutside);
+      };
+    </script>
+  </body>
+</html>
