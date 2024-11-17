@@ -1,66 +1,37 @@
 ## Foundry
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+**Welcome to ElectoVote, a decentralized governance voting application built on blockchain technology. The application leverages Foundry for smart contract development and integrates with the Morph & Sign Protocol for secure attestation-based voting. This system ensures transparency, security, and a gamified user experience for voters.**
 
 Foundry consists of:
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+-   Secure voting
+-   Transparent Governance
+-   Gamified Interface
+-   Wallet Integration
+-   Cross-platfrom Accessibility
 
-## Documentation
+## Technology Stack
 
-https://book.getfoundry.sh/
+- Frontend: HTML, CSS (styled with custom animations), and JavaScript.
+- Backend: Ethereum blockchain via Foundry smart contracts.
+Tools:
+- MetaMask for wallet interaction.
+- Web3.js for blockchain communication.
+- Morph & Sign Protocol 
 
-## Usage
+## User Guide
+Connect Wallet
+- Open Main.html in a browser.
+- Click "Connect Wallet".
+- Follow MetaMask instructions to connect your wallet.
+Vote
+- Choose a candidate on vote.html.
+- Click "Vote".
+- Check the progress bar for real-time updates.
 
-### Build
+## Contributors
+- Kelvin Guinawa (Fullstack)
+- Angelina Leanore (Fullstack and UI/UX)
+- Harrison Matthew (Fullstack)
+- Kenneth Jonatahan (Product Manager
 
-```shell
-$ forge build
-```
-
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
